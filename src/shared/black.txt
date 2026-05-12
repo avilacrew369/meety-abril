@@ -1,0 +1,80 @@
+8 de marzo
+en este dia se hiso git
+
+
+try {
+    const community = await communityService.getCommunityDetails(id);
+    // Manejar los detalles de la comunidad aquí
+} catch (error) {
+    console.error('Error retrieving community details:', error);
+}
+
+
+"use client"
+import { useChat } from '@ai-sdk/react'
+import { Form, FormLabel, FormSubmit, FormTextArea } from "@/src/shared/components/forms"
+import { useState } from 'react'
+import { left } from 'effect/Either'
+
+export default function AISearch() {
+    const [input, setInput] = useState('')
+    const {  messages, status, sendMessage } = useChat()
+
+    console.log(JSON.stringify(messages, null, 2))
+  return (
+    <>
+    {messages.map(message => (
+       <div 
+       key={message.id}
+       className='whitespace-pre-wrap mt-5 p-5 border-b border-gray-300 last-of-type:border-none'
+        >
+            <p className={`${message.role === 'user' ? 'text-right' : 'text-left'} font-black`}>
+                {message.role === 'user' ? 'Usuario :' : 'Meeti AI :'}
+            </p>
+        { message.parts.map((part, index) => {
+            if(part.type === 'text' ){
+
+                return(
+                    <div
+                        className={message.role === 'user' ? 'text-right' : 'text-left'}
+                    />
+                )
+                // return <p key={`${message.id}-part-${index}`}>{part.text}</p>
+            }
+            if(part.type === 'tool-hola' && part.state === 'output-available') {
+                return <p key={`${message.id}-part-${index}`}>{part.output}</p>
+            }
+        })}
+       </div>
+    ))}
+    <Form 
+        onSubmit={e => {
+            e.preventDefault()
+            sendMessage({text: input})
+            setInput('')
+        }}
+    >
+        <FormLabel htmlFor="prompt"   >Busca Meetis y Comunidades utilizando IA</FormLabel>
+        <FormTextArea
+            id="prompt"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+        />
+        <FormSubmit
+        value={'consultar'}
+        disabled={input.trim() === ''}
+        />
+    </Form>
+    
+    </>
+  )
+}
+
+
+Usa esta herramienta cuando el usuario pregunta por meetis o eventos virtuales.
+
+const typeText = part.type === 'tool-getVirtualMeetis'
+? { singular: 'Meeti virtual', plural: 'Meetis virtuales' } : part.type === "tool-getInPersonMeetis'
+? { singular: 'Meeti en esta ubicación', plural:
+: { singular: "Meeti, plural: "Meetis' };
+'Meetis en esta ubicación' }

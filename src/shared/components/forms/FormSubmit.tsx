@@ -1,0 +1,9 @@
+import {InputHTMLAttributes} from 'react'
+
+type Props = InputHTMLAttributes<HTMLInputElement>
+
+export  function FormSubmit(props: Props) {
+  return (
+    <input {...props} type="submit" className='disabled:opacity-50  bg-pink-600 w-full p-2 font-black text-white cursor-pointer mt-5' />
+  )
+}
